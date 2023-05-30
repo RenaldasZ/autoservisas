@@ -24,9 +24,10 @@ class CarModel(models.Model):
 class Car(models.Model):
     licence_plate = models.CharField(_("Licence Plate"), max_length=20)
     vin_code = models.CharField(_("VIN Code"), max_length=50)
-    customer = models.CharField(max_length=50, db_index=True)
+    customer = models.CharField(_("Customer"), max_length=50, db_index=True)
     model = models.ForeignKey(
-        CarModel, verbose_name=_("model"), related_name="cars", on_delete=models.CASCADE, null=True,)
+        CarModel, verbose_name=_("model"), related_name="cars", on_delete=models.CASCADE, null=True,
+    )
 
     class Meta:
         ordering = ["licence_plate"]
@@ -38,6 +39,9 @@ class Car(models.Model):
 
     def get_absolute_url(self):
         return reverse("car_detail", kwargs={"pk": self.pk})
+
+    def display_car(self):
+        return ', '.join(entry.service.name for entry in self.order_entries.all()[:3])
 
 
 class Service(models.Model):
@@ -56,7 +60,8 @@ class Service(models.Model):
 class Order(models.Model):
     date = models.CharField(_("Date"), max_length=50)
     car = models.ForeignKey(
-        Car, verbose_name=_("car"), related_name="orders", on_delete=models.CASCADE, null=True)
+        Car, verbose_name=_("car"), related_name="orders", on_delete=models.CASCADE, null=True
+    )
 
     class Meta:
         ordering = ["date", "id"]
@@ -72,9 +77,11 @@ class Order(models.Model):
 
 class OrderEntry(models.Model):
     service = models.ForeignKey(
-        Service, verbose_name=_("service"), related_name="order_entries", on_delete=models.CASCADE, null=True)
+        Service, verbose_name=_("service"), related_name="order_entries", on_delete=models.CASCADE, null=True
+    )
     order = models.ForeignKey(
-        Order, verbose_name=_("order"), related_name="order_entries", on_delete=models.CASCADE, null=True)
+        Order, verbose_name=_("order"), related_name="order_entries", on_delete=models.CASCADE, null=True
+    )
 
     quantity = models.CharField(_("Quantity"), max_length=50)
     price = models.CharField(_("Price"), max_length=50)
@@ -84,7 +91,7 @@ class OrderEntry(models.Model):
         verbose_name_plural = _("order entries")
 
     def __str__(self):
-        return f"Order entry #{self.pk} : {self.service.name}"
+        return f"Order entry #{self.pk}: {self.service.name}"
 
     def get_absolute_url(self):
         return reverse("orderentry_detail", kwargs={"pk": self.pk})
