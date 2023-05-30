@@ -40,13 +40,10 @@ class Car(models.Model):
     def get_absolute_url(self):
         return reverse("car_detail", kwargs={"pk": self.pk})
 
-    def display_car(self):
-        return ', '.join(entry.service.name for entry in self.order_entries.all()[:3])
-
 
 class Service(models.Model):
     name = models.CharField(_("Name"), max_length=100)
-    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2)
+    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, null=True, db_index=True)
 
     class Meta:
         ordering = ["name", "id"]
@@ -58,10 +55,11 @@ class Service(models.Model):
 
 
 class Order(models.Model):
-    date = models.CharField(_("Date"), max_length=50)
+    date = models.DateField(_("date"), auto_now=False, auto_now_add=False, null=True, blank=True)
     car = models.ForeignKey(
         Car, verbose_name=_("car"), related_name="orders", on_delete=models.CASCADE, null=True
     )
+    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, null=True, db_index=True)
 
     class Meta:
         ordering = ["date", "id"]
@@ -69,7 +67,7 @@ class Order(models.Model):
         verbose_name_plural = _("orders")
 
     def __str__(self):
-        return f"Order #{self.pk}"
+        return f"Order #{self.pk} - {self.car} - {self.date}"
 
     def get_absolute_url(self):
         return reverse("order_detail", kwargs={"pk": self.pk})
@@ -84,7 +82,7 @@ class OrderEntry(models.Model):
     )
 
     quantity = models.CharField(_("Quantity"), max_length=50)
-    price = models.CharField(_("Price"), max_length=50)
+    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, null=True, db_index=True)
 
     class Meta:
         verbose_name = _("order entry")
