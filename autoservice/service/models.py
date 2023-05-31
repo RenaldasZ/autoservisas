@@ -67,6 +67,14 @@ class Order(models.Model):
         on_delete=models.CASCADE, 
         null=True)
 
+    # STATUS_CHOICES = [
+    #     ("new", "New"),
+    #     ("processing", "Processing"),
+    #     ("complete", "Complete"),
+    #     ("cancelled", "Cancelled"),
+    # ]
+    # status = models.CharField(_("Status"), max_length=20, choices=STATUS_CHOICES, default="new", db_index=True)
+
     class Meta:
         ordering = ["date", "id"]
         verbose_name = _("order")
@@ -95,6 +103,15 @@ class OrderEntry(models.Model):
         related_name="order_entries", 
         on_delete=models.CASCADE, 
         null=True)
+
+    STATUS_CHOICES = [
+        ("new", "New"),
+        ("processing", "Processing"),
+        ("complete", "Complete"),
+        ("cancelled", "Cancelled"),
+    ]
+    status = models.CharField(_("Status"), max_length=20, choices=STATUS_CHOICES, default="new", db_index=True)
+
 
     class Meta:
         verbose_name = _("order entry")
