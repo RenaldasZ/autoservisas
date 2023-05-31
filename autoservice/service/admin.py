@@ -2,6 +2,10 @@ from django.contrib import admin
 from . import models
 
 
+class CarModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "make", "model", "year", "engine")
+
+
 class OrderEntryInline(admin.TabularInline):
     model = models.OrderEntry
     extra = 0
@@ -25,6 +29,6 @@ class ServiceAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(models.Order, OrderAdmin)
 admin.site.register(models.Car, CarAdmin)
-admin.site.register(models.CarModel)
+admin.site.register(models.CarModel, CarModelAdmin)
 admin.site.register(models.Service, ServiceAdmin)
 admin.site.register(models.OrderEntry)

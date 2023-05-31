@@ -1,3 +1,5 @@
+
+
 from typing import Iterable, Optional
 from django.db import models
 from django.urls import reverse
@@ -120,3 +122,4 @@ class OrderEntry(models.Model):
     #     if self.price == 0:
     #         self.price = self.service.price
     #     super().save(*args, **kwargs)
+
