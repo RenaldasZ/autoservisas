@@ -26,8 +26,11 @@ class Car(models.Model):
     vin_code = models.CharField(_("VIN Code"), max_length=50)
     customer = models.CharField(_("Customer"), max_length=50, db_index=True)
     model = models.ForeignKey(
-        CarModel, verbose_name=_("model"), related_name="cars", on_delete=models.CASCADE, null=True,
-    )
+        CarModel, 
+        verbose_name=_("model"), 
+        related_name="cars", 
+        on_delete=models.CASCADE, 
+        null=True,)
 
     class Meta:
         ordering = ["licence_plate"]
@@ -56,10 +59,13 @@ class Service(models.Model):
 
 class Order(models.Model):
     date = models.DateField(_("date"), auto_now=False, auto_now_add=False, null=True, blank=True)
-    car = models.ForeignKey(
-        Car, verbose_name=_("car"), related_name="orders", on_delete=models.CASCADE, null=True
-    )
     price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, null=True, db_index=True)
+    car = models.ForeignKey(
+        Car, 
+        verbose_name=_("car"), 
+        related_name="orders", 
+        on_delete=models.CASCADE, 
+        null=True)
 
     class Meta:
         ordering = ["date", "id"]
@@ -74,15 +80,21 @@ class Order(models.Model):
 
 
 class OrderEntry(models.Model):
-    service = models.ForeignKey(
-        Service, verbose_name=_("service"), related_name="order_entries", on_delete=models.CASCADE, null=True
-    )
-    order = models.ForeignKey(
-        Order, verbose_name=_("order"), related_name="order_entries", on_delete=models.CASCADE, null=True
-    )
 
     quantity = models.CharField(_("Quantity"), max_length=50)
     price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, null=True, db_index=True)
+    service = models.ForeignKey(
+        Service, 
+        verbose_name=_("service"), 
+        related_name="order_entries", 
+        on_delete=models.CASCADE, 
+        null=True)
+    order = models.ForeignKey(
+        Order, 
+        verbose_name=_("order"), 
+        related_name="order_entries", 
+        on_delete=models.CASCADE, 
+        null=True)
 
     class Meta:
         verbose_name = _("order entry")
