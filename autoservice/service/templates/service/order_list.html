@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Service Orders</h1>
+  <ul>
+    {% for order in orders %}
+      <li>
+        <strong>Order #: </strong>{{ order.id }}<br>
+        <strong>Car: </strong>{{ order.car }}<br>
+        <strong>Date: </strong>{{ order.date }}<br>
+        <strong>Status: </strong>{{ order.status }}<br>
+        <strong>Order Entries:</strong>
+        <ul>
+          {% for entry in order.order_entries.all %}
+            <li>
+              {{ entry }} - ${{ entry.price }}
+            </li>
+          {% empty %}
+            <li>No order entries found.</li>
+          {% endfor %}
+        </ul>
+        <strong>Total Price: ${{ order.total_price }}</strong>
+      </li>
+    {% empty %}
+      <li>No orders found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
