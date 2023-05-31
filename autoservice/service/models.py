@@ -1,3 +1,4 @@
+from typing import Iterable, Optional
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -67,14 +68,6 @@ class Order(models.Model):
         on_delete=models.CASCADE, 
         null=True)
 
-    # STATUS_CHOICES = [
-    #     ("new", "New"),
-    #     ("processing", "Processing"),
-    #     ("complete", "Complete"),
-    #     ("cancelled", "Cancelled"),
-    # ]
-    # status = models.CharField(_("Status"), max_length=20, choices=STATUS_CHOICES, default="new", db_index=True)
-
     class Meta:
         ordering = ["date", "id"]
         verbose_name = _("order")
@@ -122,3 +115,8 @@ class OrderEntry(models.Model):
 
     def get_absolute_url(self):
         return reverse("orderentry_detail", kwargs={"pk": self.pk})
+
+    # def save(self, *args, **kwargs):
+    #     if self.price == 0:
+    #         self.price = self.service.price
+    #     super().save(*args, **kwargs)
