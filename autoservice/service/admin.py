@@ -1,10 +1,11 @@
 from django.contrib import admin
 from . import models
-from .models import OrderEntry
+
 
 
 class OrderEntryInline(admin.TabularInline):
-    model = OrderEntry
+    model = models.OrderEntry
+    extra = 0
 
 
 class OrderAdmin(admin.ModelAdmin):
