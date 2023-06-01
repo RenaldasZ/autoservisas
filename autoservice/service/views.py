@@ -22,7 +22,7 @@ def index(request):
     return render(request, 'service/index.html', context)
 
 def car_list(request):
-    paginator = Paginator(Car.objects.all(), 3)
+    paginator = Paginator(Car.objects.all(), 4)
     page_number = request.GET.get('page')
     paged_cars = paginator.get_page(page_number)
     context = {
@@ -43,6 +43,6 @@ def order_detail(request, pk: int):
 
 class OrderListView(generic.ListView):
     model = Order
-    paginate_by = 3
+    paginate_by = 4
     context_object_name = 'orders'
     template_name = 'service/order_list.html'

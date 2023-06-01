@@ -7,9 +7,9 @@
     {% if cars %}
       {% include 'includes/paginator_car.html' %}
       {% for car in cars %}
-        <li>
+        <h5 class="carlist_content">
           <a href="{% url 'car_detail' car.pk %}">{{ car.model }}</a>
-        </li>
+        </h5>
       {% endfor %}
     {% else %}
       <p>No cars found.</p>

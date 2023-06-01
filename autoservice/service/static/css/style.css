@@ -73,16 +73,36 @@ footer p {
 
 /* class cars_bottom_paginator in car_list.html */
 .cars_bottom_paginator {
-  background-color: rgb(158, 158, 158);
+  background-color: rgb(221, 221, 221);
+  text-align: center;
 }
 .cars_top_paginator {
-  background-color: rgb(158, 158, 158);
+  text-align: center;
 }
 
 /* class order_bottom_paginator in paginator_pages.html */
 .order_bottom_paginator {
-  background-color: rgb(158, 158, 158); 
+  background-color: rgb(221, 221, 221);
+  text-align: center;
 }
 .order_top_paginator {
-  background-color: rgb(158, 158, 158); 
+  text-align: center;
+}
+
+.carlist_content {
+  text-align: left;
+  padding-top: 10px;
+}
+
+.carlist_content a {
+  color: rgb(88, 88, 88);
+}
+
+.orderlist_content {
+  text-align: left;
+  padding-top: 10px;
+}
+
+.orderlist_content a {
+  color: rgb(88, 88, 88);
 }

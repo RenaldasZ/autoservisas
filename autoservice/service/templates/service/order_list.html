@@ -7,9 +7,9 @@
     {% if orders %}
       {% include 'includes/paginator_nav.html' %}
       {% for order in orders %}
-        <li>
-          <strong>Order {{ order.id }} </strong><a href="{% url 'order_detail' order.pk %}">{{ order.car }}, {{ order.date }}</a>
-        </li>
+        <h5 class="orderlist_content">
+          Order {{ order.id }} <a href="{% url 'order_detail' order.pk %}">{{ order.car }}, {{ order.date }}</a>
+        </h5>
       {% endfor %}
     {% else %}
       <li>No orders found.</li>
