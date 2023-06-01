@@ -5,7 +5,7 @@
   <ul>
     {% for order in orders %}
       <li>
-        <strong>Order #: </strong><a href="{% url 'order_detail' order.pk %}">{{ order.id }}</a><br>
+        <strong>Order #: </strong><a href="{% url 'order_detail' order.pk %}">{{ order.car }}</a><br>
       </li>
     {% empty %}
       <li>No orders found.</li>
