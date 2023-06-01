@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
-{% block title %}Welcome to {{ block.super }}{% endblock title %}
+{% block title %}Welcome to {{ block.super }}{% endblock %}
+
 {% block content %}
   <h1>Service Orders</h1>
   <ul>
-    {% for order in orders %}
-      <li>
-        <strong>Order #: </strong><a href="{% url 'order_detail' order.pk %}">{{ order.car }}</a><br>
-      </li>
-    {% empty %}
+    {% if orders %}
+      {% include 'includes/paginator_nav.html' %}
+      {% for order in orders %}
+        <li>
+          <strong>Order {{ order.id }} </strong><a href="{% url 'order_detail' order.pk %}">{{ order.car }}, {{ order.date }}</a>
+        </li>
+      {% endfor %}
+    {% else %}
       <li>No orders found.</li>
-    {% endfor %}
+    {% endif %}
   </ul>
+  {% include 'includes/paginator_pages.html' %}
 {% endblock %}

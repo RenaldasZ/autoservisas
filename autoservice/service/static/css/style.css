@@ -16,11 +16,6 @@ header {
   color: #fff;
 }
 
-/* header .logo {
-  font-weight: bold;
-  font-size: 1.5rem;
-} */
-
 header ul.nav {
   display: flex;
   flex-direction: row;
@@ -76,15 +71,7 @@ footer p {
   font-size: 0.9rem;
 }
 
-.entry-status-0 {
-  background-color: #c0ffb0;
-}
-.entry-status-1 {
-  background-color: #ffcc99;
-}
-.entry-status-2 {
-  background-color: #99ccff;
-}
-.entry-status-3 {
-  background-color: #ff9999;
+/* class car_list.html */
+.car_list {
+  background-color: rgb(158, 158, 158);
 }

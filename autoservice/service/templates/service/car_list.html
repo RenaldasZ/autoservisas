@@ -1,11 +1,36 @@
 {% extends 'base.html' %}
-{% block title %}Welcome to {{ block.super }}{% endblock title %}
+
+{% block title %}
+  Welcome to {{ block.super }}
+{% endblock %}
 
 {% block content %}
   <h1>Cars in service</h1>
   <ul>
-    {% for car in cars %}
-      <li><a href="{% url 'car_detail' car.pk %}">{{ car.model }}</a></li>
-    {% endfor %}
+    {% if cars %}
+      {% for car in cars %}
+        <li>
+          <a href="{% url 'car_detail' car.pk %}">{{ car.model }}</a>
+        </li>
+      {% endfor %}
+    {% else %}
+      <p>No cars found.</p>
+    {% endif %}
   </ul>
+  
+  <div class="car_list">
+    <nav aria-label="...">
+      {% if cars.has_other_pages %}
+        <ul class="pagination pagination-sm justify-content-end">
+          {% for i in cars.paginator.page_range %}
+            {% if cars.number == i %}
+              <a class="page-item active"><strong><a class="page-link">{{ i }}</strong>
+            {% else %}
+              <a class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </nav>
+  </div>
 {% endblock %}

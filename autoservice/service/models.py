@@ -1,6 +1,3 @@
-
-
-from typing import Iterable, Optional
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -83,8 +80,7 @@ class Order(models.Model):
 
 
 class OrderEntry(models.Model):
-
-    quantity = models.CharField(_("Quantity"), max_length=50)
+    quantity = models.IntegerField(_("Quantity"), default=1)
     price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, null=True, db_index=True)
     service = models.ForeignKey(
         Service, 
@@ -107,7 +103,6 @@ class OrderEntry(models.Model):
     ]
     status = models.CharField(_("Status"), max_length=20, choices=STATUS_CHOICES, default="new", db_index=True)
 
-
     class Meta:
         verbose_name = _("order entry")
         verbose_name_plural = _("order entries")
@@ -118,8 +113,20 @@ class OrderEntry(models.Model):
     def get_absolute_url(self):
         return reverse("orderentry_detail", kwargs={"pk": self.pk})
 
-    # def save(self, *args, **kwargs):
-    #     if self.price == 0:
-    #         self.price = self.service.price
-    #     super().save(*args, **kwargs)
+    def get_color(self):
+        colors = {
+            "new": "blue",
+            "processing": "orange",
+            "complete": "green",
+            "cancelled": "red",
+        }
+        default_color = "black"
+        return colors.get(self.status, default_color)
 
+    def get_status_display(self):
+        return dict(self.STATUS_CHOICES).get(self.status)
+
+    def save(self, *args, **kwargs):
+        if self.price is None:
+            self.price = self.service.price * self.quantity
+        super().save(*args, **kwargs)
