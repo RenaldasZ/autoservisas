@@ -1,5 +1,3 @@
-
-
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from . models import Car, OrderEntry, Service, Order
@@ -31,10 +29,6 @@ def car_list(request):
         'cars': paged_cars
     }
     return render(request, 'service/car_list.html', context=context)
-
-# def car_list(request):
-#     cars = Car.objects.all()
-#     return render(request, 'service/car_list.html', {'cars': cars})
 
 def car_detail(request, pk: int):
     car = get_object_or_404(Car, pk=pk)

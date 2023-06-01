@@ -1,4 +1,4 @@
-<ul class="paginator">
+<ul class="order_bottom_paginator">
     {% for number in page_obj.paginator.page_range %}
         {% if page_obj.number != number %}
             <a href="?page={{ number }}">{{ number }}</a>

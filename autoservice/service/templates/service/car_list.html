@@ -1,13 +1,11 @@
 {% extends 'base.html' %}
-
-{% block title %}
-  Welcome to {{ block.super }}
-{% endblock %}
+{% block title %} Welcome to {{ block.super }}{% endblock %}
 
 {% block content %}
   <h1>Cars in service</h1>
   <ul>
     {% if cars %}
+      {% include 'includes/paginator_car.html' %}
       {% for car in cars %}
         <li>
           <a href="{% url 'car_detail' car.pk %}">{{ car.model }}</a>
@@ -18,7 +16,7 @@
     {% endif %}
   </ul>
   
-  <div class="car_list">
+  <div class="cars_bottom_paginator">
     <nav aria-label="...">
       {% if cars.has_other_pages %}
         <ul class="pagination pagination-sm justify-content-end">

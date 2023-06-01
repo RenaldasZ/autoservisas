@@ -71,7 +71,18 @@ footer p {
   font-size: 0.9rem;
 }
 
-/* class car_list.html */
-.car_list {
+/* class cars_bottom_paginator in car_list.html */
+.cars_bottom_paginator {
   background-color: rgb(158, 158, 158);
+}
+.cars_top_paginator {
+  background-color: rgb(158, 158, 158);
+}
+
+/* class order_bottom_paginator in paginator_pages.html */
+.order_bottom_paginator {
+  background-color: rgb(158, 158, 158); 
+}
+.order_top_paginator {
+  background-color: rgb(158, 158, 158); 
 }
