@@ -29,7 +29,7 @@ class CarModel(models.Model):
 class Car(models.Model):
     licence_plate = models.CharField(_("Licence Plate"), max_length=20)
     vin_code = models.CharField(_("VIN Code"), max_length=50)
-    customer = models.CharField(_("Customer"), max_length=50, db_index=True)
+    customer = models.CharField(_("Customer"), max_length=50)
     model = models.ForeignKey(
         CarModel, 
         verbose_name=_("model"), 
@@ -65,7 +65,7 @@ class Service(models.Model):
 
 class Order(models.Model):
     date = models.DateField(_("date"), auto_now=False, auto_now_add=False, null=True, blank=True)
-    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, null=True, db_index=True)
+    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, default=0, db_index=True)
     car = models.ForeignKey(
         Car, 
         verbose_name=_("car"), 
@@ -87,7 +87,8 @@ class Order(models.Model):
 
 class OrderEntry(models.Model):
     quantity = models.IntegerField(_("Quantity"), default=1)
-    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, null=True, db_index=True)
+    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, null=True, db_index=True, default=0)
+    total = models.DecimalField(_("Total"), max_digits=18, decimal_places=2, default=0)
     service = models.ForeignKey(
         Service, 
         verbose_name=_("service"), 
@@ -114,7 +115,7 @@ class OrderEntry(models.Model):
         verbose_name_plural = _("order entries")
 
     def __str__(self):
-        return f"Order entry #{self.pk}: {self.service.name}"
+        return f"{self.service} {self.price} {self.quantity}"
 
     def get_absolute_url(self):
         return reverse("orderentry_detail", kwargs={"pk": self.pk})
@@ -133,6 +134,11 @@ class OrderEntry(models.Model):
         return dict(self.STATUS_CHOICES).get(self.status)
 
     def save(self, *args, **kwargs):
-        if self.price is None:
-            self.price = self.service.price * self.quantity
+        if self.price == 0:
+            self.price = self.service.price
+        self.total = self.price * self.quantity
         super().save(*args, **kwargs)
+        self.order.price = self.order.order_entries.aggregate(models.Sum("total"))["total__sum"]
+        self.order.save()
+            
+        

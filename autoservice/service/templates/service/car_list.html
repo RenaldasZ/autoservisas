@@ -24,7 +24,7 @@
     <div class="cars_bottom_paginator">
       <nav aria-label="...">
         {% if cars.has_other_pages %}
-          <ul class="pagination pagination-sm justify-content-end">
+          <ul class="pagination">
             {% for i in cars.paginator.page_range %}
               {% if cars.number == i %}
                 <a class="page-item active">

@@ -98,6 +98,10 @@ footer p {
   color: rgb(88, 88, 88);
 }
 
+.carlist_content img {
+  width: 20%;
+}
+
 .orderlist_content {
   text-align: left;
   padding-top: 10px;
@@ -105,10 +109,6 @@ footer p {
 
 .orderlist_content a {
   color: rgb(88, 88, 88);
-}
-
-.carlist_content img {
-  width: 20%;
 }
 
 form {

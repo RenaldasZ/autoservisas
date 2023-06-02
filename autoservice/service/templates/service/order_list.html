@@ -13,7 +13,7 @@
       {% include 'includes/paginator_nav.html' %}
       {% for order in orders %}
         <h5 class="orderlist_content">
-          Order {{ order.id }} <a href="{% url 'order_detail' order.pk %}">{{ order.car }}, {{ order.date }}</a>
+          Order {{ order.id }} <a href="{% url 'order_detail' order.pk %}"><li>Name: {{ order.car.customer }}</li><li>Licence plate: {{ order.car }}</li><li>Date: {{ order.date }}</li></a>
         </h5>
       {% endfor %}
     {% else %}

@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
+
 {% block title %}Welcome to {{ block.super }}{% endblock title %}
+
 {% block content %}
   <h1>Service Orders</h1>
   <strong>Order #: </strong>{{ order.id }}<br>
   <strong>Car: </strong>{{ order.car }}<br>
+  <strong>Customer: </strong>{{ order.car.customer }}<br>
   <strong>Date: </strong>{{ order.date }}<br><br>
   <strong>Order Entries:</strong>
   <ul>
