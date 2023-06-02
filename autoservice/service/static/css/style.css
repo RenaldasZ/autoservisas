@@ -114,3 +114,20 @@ footer p {
 form {
   padding: 0.5rem;
 }
+
+.model_cover {
+  width: 40vh;
+}
+
+.profile_logo {
+  order: 1; /* Change the order of the element */
+}
+
+.clear {
+  clear: both;
+  width: 60%;
+}
+
+.asd {
+  list-style: none;
+}

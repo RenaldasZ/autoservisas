@@ -11,14 +11,12 @@
     {% include 'includes/paginator_car.html' %}
     <ul>
       {% for car in cars %}
-        <h5 class="carlist_content">
-          <a href="{% url 'car_detail' car.pk %}">{{ car.model }}<br>
+          <li class="asd"><a href="{% url 'car_detail' car.pk %}">{{ car.model }}<br>
           {% if car.model.cover %}
-            <img class="car.model-cover" src="{{ car.model.cover.url }}">
+            <img class="model_cover" src="{{ car.model.cover.url }}">
           {% else %}
-            <img class="model-cover" src="{% static 'service/img/default_cover.jpg' %}">
-          {% endif %}</a>
-        </h5>
+            <img class="model_cover" src="{% static 'service/img/default_cover.jpg' %}">
+          {% endif %}</a></li><br>
       {% endfor %}
     </ul>
     <div class="cars_bottom_paginator">

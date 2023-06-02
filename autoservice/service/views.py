@@ -28,8 +28,11 @@ def car_list(request):
     qs = Car.objects
     query = request.GET.get('query')
     if query:
-        qs = qs.filter(Q(licence_plate__icontains=query) |
-        Q(vin_code__icontains=query)
+        qs = qs.filter(
+            # Q(licence_plate__icontains=query) |
+            # Q(customer__icontains=query) |
+            Q(model__make__istartswith=query) 
+            # Q(vin_code__icontains=query)
         )
     else:
         qs = qs.all()
@@ -47,9 +50,7 @@ def car_detail(request, pk: int):
 
 def order_detail(request, pk: int):
     order = get_object_or_404(Order, pk=pk)
-    total_price = sum(entry.price for entry in order.order_entries.all())
-
-    return render(request, 'service/order_detail.html', {'order': order, 'total_price': total_price})
+    return render(request, 'service/order_detail.html', {'order': order})
 
 
 class OrderListView(generic.ListView):

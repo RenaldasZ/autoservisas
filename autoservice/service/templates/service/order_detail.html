@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Welcome to {{ block.super }}{% endblock title %}
 
 {% block content %}
   <h1>Service Orders</h1>
   <strong>Order #: </strong>{{ order.id }}<br>
+  <strong>Car: </strong>{{ order.car.model }}<br>
   <strong>Car: </strong>{{ order.car }}<br>
   <strong>Customer: </strong>{{ order.car.customer }}<br>
   <strong>Date: </strong>{{ order.date }}<br><br>
@@ -12,14 +13,22 @@
   <ul>
     {% for entry in order.order_entries.all %}
       <li>
-        {{ entry }} ${{ entry.price }}
+        {{ entry.service.name }}: Quantity - {{ entry.quantity }}, Price - {{ entry.price }}$, Status - 
         {% with entry_color=entry.get_color %}
           <span style="color: {{ entry_color }}">{{ entry.get_status_display }}</span>
         {% endwith %}
       </li>
-    {% empty %}
+      {% empty %}
       <li>No order entries found.</li>
-    {% endfor %}
-  </ul>
-  <strong>Total Price: ${{ total_price }}</strong>
+      {% endfor %}
+    </ul>
+    <strong>Total Price: ${{ order.price }}</strong>
+    <h5 class="carlist_content">
+      <a href="{% url 'car_detail' order.car.pk %}"><br>
+      {% if order.car.model.cover %}
+        <img class="model-cover" src="{{ order.car.model.cover.url }}">
+      {% else %}
+        <img class="model-cover" src="{% static 'service/img/default_cover.jpg' %}">
+      {% endif %}</a>
+    </h5>
 {% endblock %}

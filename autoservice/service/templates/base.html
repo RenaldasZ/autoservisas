@@ -20,11 +20,12 @@
                 <li><a href="{% url 'admin:index' %}">Admin</a></li>
             {% endif %}
         {% endif %}
-        <li>
+        <li class="profile_logo">
             {% if user.is_authenticated %}
-            &#128100; {{ user.username }}
+                &#128100; {{ user.username }}
             {% endif %}
         </li>
+        <div class="clear"></div> <!-- Add a clearing element -->
     </ul>
 </header>
 <main>{% block content %}
