@@ -2,7 +2,12 @@
 {% block title %} Welcome to {{ block.super }}{% endblock %}
 
 {% block content %}
-  <h1>Service Orders</h1>
+<h1>Service Orders</h1>
+<form action="" method="get">
+  <input name="query" type="text" value="{{ request.GET.query }}">
+  <button type="submit">&#128269;</button>
+  {% if request.GET.query %}<a href="{{ request.path }}">clear</a>{% endif %}
+</form>
   <ul>
     {% if orders %}
       {% include 'includes/paginator_nav.html' %}

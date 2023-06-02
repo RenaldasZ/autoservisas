@@ -106,3 +106,11 @@ footer p {
 .orderlist_content a {
   color: rgb(88, 88, 88);
 }
+
+.carlist_content img {
+  width: 20%;
+}
+
+form {
+  padding: 0.5rem;
+}

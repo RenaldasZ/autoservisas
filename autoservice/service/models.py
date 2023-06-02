@@ -8,7 +8,12 @@ class CarModel(models.Model):
     model = models.CharField(_("Model"), max_length=100)
     year = models.PositiveIntegerField(_("Year"))
     engine = models.CharField(_("Engine"), max_length=100)
-
+    cover = models.ImageField(
+        upload_to='service/car_covers',
+        null=True,
+        blank=True,
+    )
+    
     class Meta:
         ordering = ["year"]
         verbose_name = _("car model")
@@ -31,6 +36,7 @@ class Car(models.Model):
         related_name="cars", 
         on_delete=models.CASCADE, 
         null=True,)
+
 
     class Meta:
         ordering = ["licence_plate"]
