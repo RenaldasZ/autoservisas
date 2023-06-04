@@ -2,23 +2,24 @@
 {% block title %} Welcome to {{ block.super }}{% endblock %}
 
 {% block content %}
-<h1>Service Orders</h1>
-<form action="" method="get">
-  <input name="query" type="text" value="{{ request.GET.query }}">
-  <button type="submit">&#128269;</button>
-  {% if request.GET.query %}<a href="{{ request.path }}">clear</a>{% endif %}
-</form>
-  <ul>
-    {% if orders %}
-      {% include 'includes/paginator_nav.html' %}
-      {% for order in orders %}
-        <h5 class="orderlist_content">
-          Order {{ order.id }} <a href="{% url 'order_detail' order.pk %}"><li>Name: {{ order.car.customer }}</li><li>Licence plate: {{ order.car }}</li><li>Date: {{ order.date }}</li></a>
-        </h5>
-      {% endfor %}
-    {% else %}
-      <li>No orders found.</li>
-    {% endif %}
-  </ul>
-  {% include 'includes/paginator_pages.html' %}
+<h1>Orders</h1>
+{% include 'includes/search.html' %}
+
+{% if orders %}
+{% include 'includes/paginator_nav.html' %}
+
+  <div class="order_list">
+    {% for order in orders %}
+      <ul>
+        <li>Order {{ order.id }} <a href="{% url 'order_detail' order.pk %}"></li>
+        <li>Name: {{ order.car.customer }}</li>
+        <li>Licence plate: {{ order.car }}</li>
+        <li>Order date: {{ order.date }}</li></a>
+      </ul>
+    {% endfor %}
+  </div>
+  {% else %}
+    <li>No orders found.</li>
+{% endif %}
+{% include 'includes/paginator_pages.html' %}
 {% endblock %}

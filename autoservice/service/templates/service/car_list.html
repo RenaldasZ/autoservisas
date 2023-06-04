@@ -1,24 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Welcome to {{ block.super }}{% endblock %}
+{% block title %}
+  Welcome to {{ block.super }}
+{% endblock title %}
 
 {% block content %}
-  <h1>Cars in service</h1>
-  {% include 'includes/search.html' %}
 
-  {% if cars %}
-    {% include 'includes/paginator_car.html' %}
-    <ul>
-      {% for car in cars %}
-          <li class="asd"><a href="{% url 'car_detail' car.pk %}">{{ car.model }}<br>
-          {% if car.model.cover %}
-            <img class="model_cover" src="{{ car.model.cover.url }}">
-          {% else %}
-            <img class="model_cover" src="{% static 'service/img/default_cover.jpg' %}">
-          {% endif %}</a></li><br>
-      {% endfor %}
-    </ul>
+{% if cars %}
+<div class="container">
+  <ul class="carlist_content">
+        <h1>Cars in service</h1>
+        {% include 'includes/search.html' %}
+        {% include 'includes/paginator_car.html' %}
+        {% for car in cars %}
+          <li>
+            <a href="{% url 'car_detail' car.pk %}">
+              {{ car.model }}<br>
+              {% if car.model.cover %}
+                <img class="model-cover" src="{{ car.model.cover.url }}">
+                {{ car.order_entry.status }}
+              {% else %}
+                <img class="model-cover" src="{% static 'service/img/default_cover.jpg' %}">
+              {% endif %}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
     <div class="cars_bottom_paginator">
       <nav aria-label="...">
         {% if cars.has_other_pages %}
@@ -40,5 +48,5 @@
     </div>
   {% else %}
     <p>No cars found.</p>
-  {% endif %}
+{% endif %}
 {% endblock %}

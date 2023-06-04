@@ -7,25 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}PTU12 Ren's Service{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="{% static 'css/custom.css' %}">
 </head>
 <body>
 <header>
     <ul class="nav">
-        <li class="logo">&#128218; PTU12 Ren's Service</li>
+        <li><div id="logo">Ren's Garage</div></li>
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'car_list' %}">Cars</a></li>
         <li><a href="{% url 'order_list' %}">Orders</a></li>
-        {% if user.is_authenticated %}
+        <div class="clear"></div> <!-- Add a clearing element -->
+        <li class="profile_logo">
+            {% if user.is_authenticated %}
+ 
+            &#128100; {{ user.username }}
+        {% endif %}
+    </li>
             {% if user.is_staff or user.is_superuser %}
                 <li><a href="{% url 'admin:index' %}">Admin</a></li>
             {% endif %}
-        {% endif %}
-        <li class="profile_logo">
-            {% if user.is_authenticated %}
-                &#128100; {{ user.username }}
-            {% endif %}
-        </li>
-        <div class="clear"></div> <!-- Add a clearing element -->
+        
     </ul>
 </header>
 <main>{% block content %}

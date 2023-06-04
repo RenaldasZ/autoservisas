@@ -3,23 +3,23 @@
 {% block title %}Welcome to {{ block.super }}{% endblock title %}
 
 {% block content %}
-  <h1>Service Orders</h1>
-  <strong>Order #: </strong>{{ order.id }}<br>
-  <strong>Car: </strong>{{ order.car.model }}<br>
-  <strong>Car: </strong>{{ order.car }}<br>
-  <strong>Customer: </strong>{{ order.car.customer }}<br>
-  <strong>Date: </strong>{{ order.date }}<br><br>
-  <strong>Order Entries:</strong>
-  <ul>
-    {% for entry in order.order_entries.all %}
-      <li>
-        {{ entry.service.name }}: Quantity - {{ entry.quantity }}, Price - {{ entry.price }}$, Status - 
-        {% with entry_color=entry.get_color %}
-          <span style="color: {{ entry_color }}">{{ entry.get_status_display }}</span>
-        {% endwith %}
-      </li>
+  <div class="container">
+    <h1>Service Order #{{ order.id }}</h1>
+    <strong>Car owner: </strong>{{ order.car.customer }}<br>
+    <strong>Model: </strong>{{ order.car.model.make }} {{ order.car.model.model }} {{ order.car.model.year }}<br>
+    <strong>Engine: </strong>{{ order.car.model.engine }}<br>
+    <strong>Date: </strong>{{ order.date }}<br><br>
+    <strong>Order Entries:</strong>
+    <ul>
+      {% for entry in order.order_entries.all %}
+        <li>
+          {{ entry.service.name }}: Quantity - {{ entry.quantity }}, Price - {{ entry.price }}$, Status - 
+          {% with entry_color=entry.get_color %}
+            <span style="color: {{ entry_color }}">{{ entry.get_status_display }}</span>
+          {% endwith %}
+        </li>
       {% empty %}
-      <li>No order entries found.</li>
+        <li>No order entries found.</li>
       {% endfor %}
     </ul>
     <strong>Total Price: ${{ order.price }}</strong>
@@ -31,4 +31,5 @@
         <img class="model-cover" src="{% static 'service/img/default_cover.jpg' %}">
       {% endif %}</a>
     </h5>
+  </div>
 {% endblock %}

@@ -6,20 +6,20 @@ class CarModelAdmin(admin.ModelAdmin):
     list_display = ("id", "make", "model", "year", "engine")
 
 
+class CarAdmin(admin.ModelAdmin):
+    list_display = ("id", "customer", "model", "licence_plate", "vin_code")
+    list_filter = ("customer", "model")
+    search_fields = ('licence_plate', 'vin_code')
+
+
 class OrderEntryInline(admin.TabularInline):
     model = models.OrderEntry
     extra = 0
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "car", "date")
+    list_display = ("id", "date", "car", "price")
     inlines = [OrderEntryInline]
-
-
-class CarAdmin(admin.ModelAdmin):
-    list_display = ("id", "customer", "model", "licence_plate", "vin_code")
-    list_filter = ("customer", "model")
-    search_fields = ('licence_plate', 'vin_code')
 
 
 class ServiceAdmin(admin.ModelAdmin):

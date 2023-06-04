@@ -8,11 +8,13 @@ from django.views import generic
 
 def index(request):
     cars = Car.objects.all().count()
+    all_services = Service.objects.all()
+    clean_service_names = [service.name for service in all_services]
     services = Service.objects.all().count()
     new_services = OrderEntry.objects.filter(status__exact="new").count()
     processing_services = OrderEntry.objects.filter(status__exact="processing").count()
-    completed_services = OrderEntry.objects.filter(status__exact="completed").count()
-    canceled_services = OrderEntry.objects.filter(status__exact="canceled").count()
+    completed_services = OrderEntry.objects.filter(status__exact="complete").count()
+    canceled_services = OrderEntry.objects.filter(status__exact="cancelled").count()
 
     context = {
         'cars': cars,
@@ -21,6 +23,7 @@ def index(request):
         'processing_services': processing_services,
         'completed_services': completed_services,
         'canceled_services': canceled_services,
+        'all_services': clean_service_names,
     }
     return render(request, 'service/index.html', context)
 
@@ -29,14 +32,14 @@ def car_list(request):
     query = request.GET.get('query')
     if query:
         qs = qs.filter(
-            # Q(licence_plate__icontains=query) |
-            # Q(customer__icontains=query) |
+            Q(model__year__istartswith=query) |
+            Q(model__model__istartswith=query) |
             Q(model__make__istartswith=query) 
             # Q(vin_code__icontains=query)
         )
     else:
         qs = qs.all()
-    paginator = Paginator(qs, 3)
+    paginator = Paginator(qs, 2)
     page_number = request.GET.get('page')
     paged_cars = paginator.get_page(page_number)
     context = {

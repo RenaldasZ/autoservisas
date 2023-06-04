@@ -1,15 +1,30 @@
 {% extends 'base.html' %}
-{% block title %}Welcome to {{ block.super }}{% endblock title %}
+{% load static %}
+
+{% block title %}
+  Welcome to {{ block.super }}
+{% endblock title %}
+
 {% block content %}
-<h1>PTU12 Autoservice</h1>
-<p>Welcome to Ren's Service!</p>
-<p>Currently available:</p>
-<ul>
-    <li><strong>Cars:</strong> {{ cars }}</li>
-    <li><strong>Total Services:</strong> {{ services }}</li>
-    <li><strong>New services:</strong> {{ new_services }}</li>
-    <li><strong>Processing services:</strong> {{ processing_services }}</li>
-    <li><strong>Completed services:</strong> {{ completed_services }}</li>
-    <li><strong>Canceled services:</strong> {{ canceled_services }}</li>
-</ul>
+<body>
+  <div class="container">
+    <h1>Welcome to Ren's Auto Garage!</h1>
+
+    <ul>
+      <h2>We have {{ cars }} registered cars</h2>
+      <h3>And {{ services }} available services</h3>
+      {% for service_name in all_services %}
+      <li>{{ service_name }}</li>
+      {% endfor %}
+    </ul><br>
+
+    <h2>Service Progress</h2>
+    <ul>
+      <li>New services: {{ new_services }}</li>
+      <li>Processing services: {{ processing_services }}</li>
+      <li>Completed services: {{ completed_services }}</li>
+      <li>Canceled services: {{ canceled_services }}</li>
+    </ul>
+  </div>
+</body>
 {% endblock content %}
