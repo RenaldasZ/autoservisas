@@ -19,10 +19,11 @@
         <div class="clear"></div> <!-- Add a clearing element -->
         <li class="profile_logo">
             {% if user.is_authenticated %}
- 
             &#128100; {{ user.username }}
-        {% endif %}
-    </li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
             {% if user.is_staff or user.is_superuser %}
                 <li><a href="{% url 'admin:index' %}">Admin</a></li>
             {% endif %}

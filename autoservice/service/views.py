@@ -16,6 +16,10 @@ def index(request):
     completed_services = OrderEntry.objects.filter(status__exact="complete").count()
     canceled_services = OrderEntry.objects.filter(status__exact="cancelled").count()
 
+    #apsilankymu skaitliukas
+    num_visits = request.session.get('num_visits', 1)
+    request.session['num_visits'] = num_visits + 1
+
     context = {
         'cars': cars,
         'services': services,
@@ -24,6 +28,7 @@ def index(request):
         'completed_services': completed_services,
         'canceled_services': canceled_services,
         'all_services': clean_service_names,
+        'num_visits': num_visits,
     }
     return render(request, 'service/index.html', context)
 

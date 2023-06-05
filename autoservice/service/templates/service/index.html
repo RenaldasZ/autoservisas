@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load humanize %}
 {% block title %}
   Welcome to {{ block.super }}
 {% endblock title %}
@@ -24,6 +24,7 @@
       <li>Processing services: {{ processing_services }}</li>
       <li>Completed services: {{ completed_services }}</li>
       <li>Canceled services: {{ canceled_services }}</li>
+      <li>You'r visiting us already for the: {{ num_visits|ordinal }} time</li>
     </ul>
   </div>
 </body>
