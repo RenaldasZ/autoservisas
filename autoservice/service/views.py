@@ -81,7 +81,7 @@ class OrderListView(generic.ListView):
             )
         return qs
             
-#neveikia. Reikia sutvarkyti.
+
 class UserOrderEntryListView(LoginRequiredMixin, generic.ListView):
     model = Order
     template_name = 'service/user_orderentry_list.html'
@@ -92,10 +92,3 @@ class UserOrderEntryListView(LoginRequiredMixin, generic.ListView):
         qs = qs.filter(car__client=self.request.user)
         return qs
     
-# class OrdersByUserListView(LoginRequiredMixin,generic.ListView):
-#     model = OrderEntry
-#     template_name ='user_orderentry_list.html'
-#     paginate_by = 10
-    
-#     def get_queryset(self):
-#         return OrderEntry.objects.filter(order_detail=self.request.user).filter(status__exact='new').order_by('due_back')

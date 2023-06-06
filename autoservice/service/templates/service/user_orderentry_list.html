@@ -3,6 +3,7 @@
 {% block title %}Welcome to {{ block.super }}{% endblock title %}
 
 {% block content %}
+<div class="container">
 <h1>My orders</h1>
 {% if order_list %}
 <ul>
@@ -22,5 +23,6 @@
 <p class="box box-warning">
     You have no orders yet, go and make some!
 </p>
+</div>
 {% endif %}
 {% endblock content %}

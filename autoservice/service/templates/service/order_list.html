@@ -1,25 +1,32 @@
 {% extends 'base.html' %}
-{% block title %} Welcome to {{ block.super }}{% endblock %}
+
+{% block title %}
+Welcome to {{ block.super }}
+{% endblock %}
 
 {% block content %}
-<h1>Orders</h1>
-{% include 'includes/search.html' %}
 
-{% if orders %}
-{% include 'includes/paginator_nav.html' %}
-
-  <div class="order_list">
-    {% for order in orders %}
-      <ul>
-        <li>Order {{ order.id }} <a href="{% url 'order_detail' order.pk %}"></li>
-        <li>Name: {{ order.car.customer }}</li>
-        <li>Licence plate: {{ order.car }}</li>
-        <li>Order date: {{ order.date }}</li></a>
-      </ul>
-    {% endfor %}
-  </div>
+<div class="container">
+  <h1>Orders</h1>
+  {% include 'includes/search.html' %}
+  {% include 'includes/paginator_nav.html' %}
+  <ul>
+    {% if orders %}
+      {% for order in orders %}
+        <li class="container">
+          Order #{{ order.id }} <a href="{% url 'order_detail' order.pk %}"><br><br>
+          <ul>
+            <li>Name: {{ order.car.client }}</li>
+            <li>Licence plate: {{ order.car }}</li>
+            <li>Order date: {{ order.date }}</li>
+          </ul>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
   {% else %}
     <li>No orders found.</li>
-{% endif %}
-{% include 'includes/paginator_pages.html' %}
+  {% endif %}
+  {% include 'includes/paginator_pages.html' %}
+</div>
 {% endblock %}
