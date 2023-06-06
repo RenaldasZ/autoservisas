@@ -7,8 +7,8 @@ class CarModelAdmin(admin.ModelAdmin):
 
 
 class CarAdmin(admin.ModelAdmin):
-    list_display = ("id", "customer", "model", "licence_plate", "vin_code")
-    list_filter = ("customer", "model")
+    list_display = ("id", "client", "model", "licence_plate", "vin_code", "note")
+    list_filter = ("note", "model")
     search_fields = ('licence_plate', 'vin_code')
 
 
@@ -18,8 +18,14 @@ class OrderEntryInline(admin.TabularInline):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "date", "car", "price")
+    list_display = ("id", "date", "car", "price", "client")
     inlines = [OrderEntryInline]
+
+
+class OrderEntryAdmin(admin.ModelAdmin):
+    list_display = ('order', 'status', 'service')
+    list_filter = ('order', 'status')
+    list_editable = ('status', )
 
 
 class ServiceAdmin(admin.ModelAdmin):
@@ -31,4 +37,4 @@ admin.site.register(models.Order, OrderAdmin)
 admin.site.register(models.Car, CarAdmin)
 admin.site.register(models.CarModel, CarModelAdmin)
 admin.site.register(models.Service, ServiceAdmin)
-admin.site.register(models.OrderEntry)
+admin.site.register(models.OrderEntry, OrderEntryAdmin)

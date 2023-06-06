@@ -5,23 +5,26 @@
 {% block content %}
   <div class="container">
     <h1>Service Order #{{ order.id }}</h1>
-    <strong>Car owner: </strong>{{ order.car.customer }}<br>
+    <strong>Car owner: </strong>{{ order.car.client }}<br>
     <strong>Model: </strong>{{ order.car.model.make }} {{ order.car.model.model }} {{ order.car.model.year }}<br>
     <strong>Engine: </strong>{{ order.car.model.engine }}<br>
     <strong>Date: </strong>{{ order.date }}<br><br>
-    <strong>Order Entries:</strong>
-    <ul>
+    
+    <center><strong>Order Entries</strong></center>
+
       {% for entry in order.order_entries.all %}
-        <li>
-          {{ entry.service.name }}: Quantity - {{ entry.quantity }}, Price - {{ entry.price }}$, Status - 
+      {{ entry.service.name }}:<br> 
+        Quantity - {{ entry.quantity }}, 
+        Price - {{ entry.price }}$,<br>
+        Status - 
           {% with entry_color=entry.get_color %}
-            <span style="color: {{ entry_color }}">{{ entry.get_status_display }}</span>
+            <span style="color: {{ entry_color }}">{{ entry.get_status_display }}<br><br></span>
           {% endwith %}
-        </li>
+        
       {% empty %}
         <li>No order entries found.</li>
       {% endfor %}
-    </ul>
+
     <strong>Total Price: ${{ order.price }}</strong>
     <h5 class="carlist_content">
       <a href="{% url 'car_detail' order.car.pk %}"><br>

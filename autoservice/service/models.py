@@ -1,6 +1,10 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
+from datetime import date
+
+User = get_user_model()
 
 
 class CarModel(models.Model):
@@ -27,15 +31,20 @@ class CarModel(models.Model):
 
 
 class Car(models.Model):
-    licence_plate = models.CharField(_("Licence Plate"), max_length=20)
-    vin_code = models.CharField(_("VIN Code"), max_length=50)
-    customer = models.CharField(_("Customer"), max_length=50)
+    client = models.ForeignKey(
+        User, 
+        verbose_name=_("client"), 
+        related_name="cars", 
+        on_delete=models.CASCADE, null=True, blank=True)
     model = models.ForeignKey(
         CarModel, 
         verbose_name=_("model"), 
         related_name="cars", 
         on_delete=models.CASCADE, 
         null=True,)
+    licence_plate = models.CharField(_("Licence Plate"), max_length=20)
+    vin_code = models.CharField(_("VIN Code"), max_length=50)
+    note = models.CharField(_("Note"), max_length=50, null=True, blank=True)
 
 
     class Meta:
@@ -73,6 +82,14 @@ class Order(models.Model):
         on_delete=models.CASCADE, 
         null=True)
 
+    due_back = models.DateField(_("due back"), null=True, blank=True, db_index=True)
+
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+        return False
+    
     class Meta:
         ordering = ["date", "id"]
         verbose_name = _("order")
@@ -83,6 +100,10 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return reverse("order_detail", kwargs={"pk": self.pk})
+    
+    @property
+    def client(self):
+        return self.car.client
 
 
 class OrderEntry(models.Model):
@@ -102,6 +123,7 @@ class OrderEntry(models.Model):
         on_delete=models.CASCADE, 
         null=True)
 
+
     STATUS_CHOICES = [
         ("new", "New"),
         ("processing", "Processing"),
@@ -109,6 +131,7 @@ class OrderEntry(models.Model):
         ("cancelled", "Cancelled"),
     ]
     status = models.CharField(_("Status"), max_length=20, choices=STATUS_CHOICES, default="new", db_index=True)
+   
 
     class Meta:
         verbose_name = _("order entry")
