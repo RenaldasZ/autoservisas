@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from datetime import date
+# from tinymce import models as tinymce_models
+from tinymce.models import HTMLField
 
 User = get_user_model()
 
@@ -44,7 +46,7 @@ class Car(models.Model):
         null=True,)
     licence_plate = models.CharField(_("Licence Plate"), max_length=20)
     vin_code = models.CharField(_("VIN Code"), max_length=50)
-    note = models.CharField(_("Note"), max_length=50, null=True, blank=True)
+    note = HTMLField(_("Note"), max_length=8000, blank=True, null=True)
 
 
     class Meta:

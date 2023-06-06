@@ -23,18 +23,8 @@ body {
 
 header {
   background-color: #89a19e;
-  padding: 1rem;
+  padding: 0.2rem;
   color: #fff;
-}
-
-/* Create a tab between menu list and profile logo */
-.clear {
-  clear: both;
-  width: 50%;
-}
-
-.profile_logo {
-  order: 0; /* Change the order of the element */
 }
 
 header ul.nav {
@@ -42,7 +32,7 @@ header ul.nav {
   flex-direction: row;
   list-style: none;
   padding-inline-start: 0;
-  margin-top: 1rem;
+
 }
 
 header ul.nav li {
@@ -99,7 +89,6 @@ footer p {
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  list-style: none;
 }
 
 .container h1 {
@@ -128,7 +117,6 @@ footer p {
 
 .container li {
   margin-bottom: 10px;
-  list-style: none;
 }
 
 /* class cars_bottom_paginator in car_list.html */
@@ -136,6 +124,7 @@ footer p {
   background-color: rgb(221, 221, 221);
   text-align: center;
 }
+
 .cars_top_paginator {
   text-align: center;
 }
@@ -145,6 +134,7 @@ footer p {
   background-color: rgb(221, 221, 221);
   text-align: center;
 }
+
 .order_top_paginator {
   text-align: center;
 }
@@ -165,7 +155,7 @@ footer p {
 .order_list {
   text-align: left;
   padding-top: 10px;
-} 
+}
 
 .order_list a {
   color: rgb(88, 88, 88);
@@ -183,10 +173,14 @@ form {
   list-style: none;
 }
 
-
 .orderoverdue {
   background-color: #aa0000;
   color: #ffffff;
   font-weight: bolder;
   padding: 0 0.5rem;
+}
+
+form p label {
+  display: inline-block;
+  min-width: 12vw;
 }
