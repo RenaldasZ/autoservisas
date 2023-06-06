@@ -30,11 +30,11 @@ header {
 /* Create a tab between menu list and profile logo */
 .clear {
   clear: both;
-  width: 60%;
+  width: 50%;
 }
 
 .profile_logo {
-  order: 1; /* Change the order of the element */
+  order: 0; /* Change the order of the element */
 }
 
 header ul.nav {
@@ -99,6 +99,7 @@ footer p {
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  list-style: none;
 }
 
 .container h1 {
@@ -180,4 +181,12 @@ form {
 
 .car_list_content {
   list-style: none;
+}
+
+
+.orderoverdue {
+  background-color: #aa0000;
+  color: #ffffff;
+  font-weight: bolder;
+  padding: 0 0.5rem;
 }

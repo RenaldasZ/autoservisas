@@ -17,11 +17,10 @@
         <li><a href="{% url 'car_list' %}">Cars</a></li>
         <li><a href="{% url 'order_list' %}">Orders</a></li>
         <div class="clear"></div> <!-- Add a clearing element -->
-        <li class="profile_logo">
-            {% if user.is_authenticated %}
-            &#128100; {{ user.username }}
+        <li class="profile_logo"></li> 
+            {% if user.is_authenticated %} &#128100; {{ user.username }}
             <li><a href="{% url 'logout' %}">Logout</a></li>
-            <li><a href="{% url 'user_orders' %}">My Orders</a></li>
+            <li><a href="{% url 'user_orders' %}">MyOrders</a></li>
         {% else %}
             <li><a href="{% url 'login' %}?next={{request.path}}">Login</a></li>
             {% endif %}
