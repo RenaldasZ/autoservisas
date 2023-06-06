@@ -19,6 +19,11 @@ Welcome to {{ block.super }}
             <li>Name: {{ order.car.client }}</li>
             <li>Licence plate: {{ order.car }}</li>
             <li>Order date: {{ order.date }}</li>
+            {% if order.due_back %} 
+            Should be fixed by: {{ order.due_back }}
+            {% endif %}
+            {% if order.status == status and order.is_overdue %}
+            <span class="orderoverdue">OVERDUE!</span>{% endif %}
           </ul>
           </a>
         </li>
