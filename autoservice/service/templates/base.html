@@ -23,7 +23,7 @@
 
         {% if user.is_authenticated %} 
         <li><a href="{% url 'user_orders' %}">MyOrders</a></li>
-        <li>{{ user.username }}&#128100;</li>
+        <li><a href="{% url 'profile' %}">&#128100; {{ user.username }}</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
         
         {% else %}

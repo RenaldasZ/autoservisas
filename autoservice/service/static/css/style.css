@@ -162,11 +162,6 @@ footer p {
   width: 100%;
 }
 
-/* .order_list {
-  text-align: left;
-  padding-top: 10px;
-} */
-
 .order_list a {
   color: rgb(88, 88, 88);
 }
@@ -197,4 +192,31 @@ form p label {
 
 label[for='id_content'] {
     display: none;
+}
+
+.profile {
+  text-align: center;
+  margin: 20px;
+}
+
+.profile h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.profile .user-profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.profile p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.profile p:last-child {
+  margin-bottom: 0;
 }
