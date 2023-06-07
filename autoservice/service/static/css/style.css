@@ -194,3 +194,7 @@ form p label {
   display: inline-block;
   min-width: 12vw;
 }
+
+label[for='id_content'] {
+    display: none;
+}

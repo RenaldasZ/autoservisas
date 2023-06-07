@@ -1,11 +1,15 @@
-from typing import Any
+from typing import Any, Dict
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models.query import QuerySet
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, reverse
+from django.utils.translation import gettext_lazy as _
 from . models import Car, OrderEntry, Service, Order
 from django.views import generic
+from . forms import OrderReviewForm
 
 def index(request):
     cars = Car.objects.all().count()
@@ -57,10 +61,6 @@ def car_detail(request, pk: int):
     car = get_object_or_404(Car, pk=pk)
     return render(request, 'service/car_detail.html', {'car': car})
 
-def order_detail(request, pk: int):
-    order = get_object_or_404(Order, pk=pk)
-    return render(request, 'service/order_detail.html', {'order': order})
-
 
 class OrderListView(generic.ListView):
     model = Order
@@ -92,3 +92,31 @@ class UserOrderEntryListView(LoginRequiredMixin, generic.ListView):
         qs = qs.filter(car__client=self.request.user)
         return qs
     
+class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
+    model = Order
+    template_name = 'service/order_detail.html'
+    form_class = OrderReviewForm
+
+    def get_initial(self) -> Dict[str, Any]:
+        initial = super().get_initial()
+        initial['order'] = self.get_object()
+        initial['reviewer'] = self.request.user
+        return initial
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+        
+    def form_valid(self, form: Any) -> HttpResponse:
+        form.instance.order = self.get_object()
+        form.instance.reviewer = self.request.user
+        form.save()
+        messages.success(self.request, _('Review posted!'))
+        return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        return reverse('order_detail', kwargs={'pk':self.get_object().pk})

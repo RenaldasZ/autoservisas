@@ -166,4 +166,31 @@ class OrderEntry(models.Model):
         self.order.price = self.order.order_entries.aggregate(models.Sum("total"))["total__sum"]
         self.order.save()
             
-        
+
+class OrderReview(models.Model):
+    order = models.ForeignKey(
+        Order,
+        verbose_name=_("order"),
+        on_delete=models.CASCADE,
+        related_name='reviews',
+    )
+    reviewer = models.ForeignKey(
+        User,
+        verbose_name=_("reviewer"),
+        on_delete=models.SET_NULL,
+        related_name='order_reviews',
+        null=True, blank=True,
+    )
+    reviewed_at = models.DateTimeField(_("Reviewed"), auto_now_add=True)
+    content = models.TextField(_("content"), max_length=4000)
+
+    class Meta:
+        ordering = ['-reviewed_at']
+        verbose_name = _("order review")
+        verbose_name_plural = _("order reviews")
+
+    def __str__(self):
+        return f"{self.reviewed_at}: {self.reviewer}"
+
+    def get_absolute_url(self):
+        return reverse("orderreview_detail", kwargs={"pk": self.pk})

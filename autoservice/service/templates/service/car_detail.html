@@ -7,6 +7,7 @@
 
 {% block content %}
 <h1>Car Detail</h1>
+<div class="container">
 <p><strong>Owner:</strong> {{ order.car.client }}</p>
 <p><strong>Model:</strong> {{ car.model }}</p>
 <p><strong>License Plate:</strong> {{ car.licence_plate }}</p>
@@ -16,4 +17,5 @@
 {% else %}
     <img class="model_cover" src="{% static 'service/img/default_cover.jpg' %}">
 {% endif %}
+</div>
 {% endblock %}
