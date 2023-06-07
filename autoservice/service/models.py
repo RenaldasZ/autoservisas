@@ -76,7 +76,7 @@ class Service(models.Model):
 
 class Order(models.Model):
     date = models.DateField(_("date"), auto_now=False, auto_now_add=False, null=True, blank=True)
-    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, default=0, db_index=True)
+    price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, default=0, db_index=True, null=True)
     car = models.ForeignKey(
         Car, 
         verbose_name=_("car"), 
@@ -161,9 +161,10 @@ class OrderEntry(models.Model):
     def save(self, *args, **kwargs):
         if self.price == 0:
             self.price = self.service.price
-        self.total = self.price * self.quantity
+        if self.status != "cancelled":  # Skip calculating total if service is cancelled
+            self.total = self.price * self.quantity
         super().save(*args, **kwargs)
-        self.order.price = self.order.order_entries.aggregate(models.Sum("total"))["total__sum"]
+        self.order.price = self.order.order_entries.exclude(status="cancelled").aggregate(models.Sum("total"))["total__sum"]
         self.order.save()
             
 

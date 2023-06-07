@@ -4,7 +4,7 @@ html {
 
 #logo {
   font-family: Arial, sans-serif;
-  font-size: 24px;
+  font-size: 26px;
   color: #000000;
   text-transform: uppercase;
   padding: 10px;
@@ -93,12 +93,11 @@ footer p {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 80vh;
   margin: 50px auto;
   padding: 20px;
   background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .container h1 {
@@ -168,10 +167,6 @@ footer p {
 
 form {
   padding: 0.5rem;
-}
-
-.model_cover {
-  width: 30vh;
 }
 
 .car_list_content {

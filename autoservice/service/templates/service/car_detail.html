@@ -8,14 +8,16 @@
 {% block content %}
 <h1>Car Detail</h1>
 <div class="container">
-<p><strong>Owner:</strong> {{ order.car.client }}</p>
-<p><strong>Model:</strong> {{ car.model }}</p>
-<p><strong>License Plate:</strong> {{ car.licence_plate }}</p>
-<p><strong>VIN Code:</strong> {{ car.vin_code }}</p>
+    <ul class="carlist_content">
+<li><strong>Owner:</strong> {{ car.client }}</li>
+<li><strong>Model:</strong> {{ car.model }}</li>
+<li><strong>License Plate:</strong> {{ car.licence_plate }}</li>
+<li><strong>VIN Code:</strong> {{ car.vin_code }}</li>
 {% if car.model.cover %}
-    <img class="model_cover" src="{{ car.model.cover.url }}">
+    <img src="{{ car.model.cover.url }}">
 {% else %}
-    <img class="model_cover" src="{% static 'service/img/default_cover.jpg' %}">
+    <img src="{% static 'service/img/default_cover.jpg' %}">
 {% endif %}
+    </ul>
 </div>
 {% endblock %}
