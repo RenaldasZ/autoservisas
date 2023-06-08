@@ -6,9 +6,8 @@
 {% endblock title %}
 
 {% block content %}
-
-{% if cars %}
 <div class="container">
+  {% if cars %}
   <ul class="carlist_content">
         <h1>Cars in service</h1>
         {% include 'includes/search.html' %}
