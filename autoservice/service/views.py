@@ -153,7 +153,7 @@ class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
         return form
 
     def get_success_url(self) -> str:
-        return reverse('my-order-new')
+        return reverse('my_orders')
 
     def form_valid(self, form):
         form.instance.order = self.request.user
