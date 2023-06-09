@@ -75,8 +75,9 @@ class Service(models.Model):
 
 
 class Order(models.Model):
-    date = models.DateField(_("date"), auto_now=False, auto_now_add=False, null=True, blank=True)
+    date = models.DateField(_("date"), auto_now=True, auto_now_add=False, null=True, blank=True)
     price = models.DecimalField(_("Price"), max_digits=18, decimal_places=2, default=0, db_index=True, null=True)
+
     car = models.ForeignKey(
         Car, 
         verbose_name=_("car"), 

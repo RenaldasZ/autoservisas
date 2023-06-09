@@ -4,12 +4,14 @@
 
 {% block content %}
 <div class="container">
+    <li><a href="{% url 'my-car-new'%}?next=/service">Register your car</a></li>
 <h1>My cars</h1>
 {% if car_list %}
         <ul>
             {% for car in car_list %}
                 <li>
                     <a href="{% url 'car_detail' car.pk %}">{{ car.model }}</a>
+                    <a href="{% url 'car_update' car.pk %}"> Edit</a>
                 </li>
             {% endfor %}
         </ul>

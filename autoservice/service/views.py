@@ -1,5 +1,8 @@
+
+
+
 from typing import Any, Dict, Optional, Type
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models.query import QuerySet
@@ -10,7 +13,9 @@ from django.shortcuts import render, get_object_or_404, reverse
 from django.utils.translation import gettext_lazy as _
 from . models import Car, OrderEntry, Service, Order
 from django.views import generic
-from . forms import OrderReviewForm, OrderForm
+from . forms import OrderReviewForm, OrderForm, CarForm
+from django.urls import reverse_lazy
+
 
 def index(request):
     cars = Car.objects.all().count()
@@ -144,7 +149,7 @@ class UserOrderDetailView(LoginRequiredMixin, generic.DetailView):
 class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
     model = Order
     form_class = OrderForm
-    template_name = 'service/user_order_form.html'
+    template_name = 'service/user_order_create.html'  
 
     def get_form(self, form_class: Type[BaseModelForm] | None = form_class) -> BaseModelForm:
         form = super().get_form(form_class)
@@ -155,9 +160,54 @@ class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
     def get_success_url(self) -> str:
         return reverse('my_orders')
 
-    def form_valid(self, form):
-        form.instance.order = self.request.user
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.client = self.request.user
+    #     return super().form_valid(form)
 
     def get_absolute_url(self):
         return reverse('order_detail', args=[str(self.id)])
+    
+
+class UserCarCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Car
+    form_class = CarForm
+    template_name = 'service/user_car_create.html'  
+
+    def get_initial(self) -> Dict[str, Any]:
+        initial = super().get_initial()
+        initial['client'] = self.request.user
+        return initial
+    
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        form.instance.client = self.request.user
+        return super().form_valid(form)
+    
+
+class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    form_class = CarForm
+    template_name = 'service/user_car_update.html'
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        form.instance.client = self.request.user
+        return super().form_valid(form)
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        if obj.client != self.request.user:
+            raise get_object_or_404()
+        return obj
+
+    def get_success_url(self):
+        return reverse('car_detail', kwargs={'pk': self.object.pk})
+    
+
+class OrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Order
+    template_name = 'service/order_confirm_delete.html'
+    success_url = reverse_lazy('my_orders')
+
+    def test_func(self) -> bool:
+        order = self.get_object()
+        new_or_cancelled = order.order_entries.filter(Q(status='processing') | Q(status='complete')).exists()
+        return not new_or_cancelled

@@ -19,7 +19,16 @@ class OrderReviewForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = models.Order
-        fields = ('car', 'due_back')
+        fields = ('car', 'due_back', 'price')
+        widgets = {
+            'due_back': DateInput(),
+            'price': forms.HiddenInput(),
+        }
+
+class CarForm(forms.ModelForm):
+    class Meta:
+        model = models.Car
+        fields = ('model', 'vin_code', 'licence_plate', 'note')
         widgets = {
             'due_back': DateInput(),
         }
