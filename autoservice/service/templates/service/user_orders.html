@@ -4,6 +4,7 @@
 
 {% block content %}
 <div class="container">
+    <li><a href="{% url 'my-order-new'%}?next=/service">Make an order</a></li>
 <h1>My orders</h1>
 {% if order_list %}
 <ul>

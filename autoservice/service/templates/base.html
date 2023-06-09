@@ -22,7 +22,8 @@
         {% endif %}
 
         {% if user.is_authenticated %} 
-        <li><a href="{% url 'user_orders' %}">MyOrders</a></li>
+        <li><a href="{% url 'my_orders' %}">MyOrders</a></li>
+        <li><a href="{% url 'my_cars' %}">MyCars</a></li>
         <li><a href="{% url 'profile' %}">&#128100; {{ user.username }}</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
         

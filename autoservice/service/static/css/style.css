@@ -215,3 +215,8 @@ label[for='id_content'] {
 .profile p:last-child {
   margin-bottom: 0;
 }
+
+img.user-avatar {
+  max-height: 1rem;
+  border-radius: 0.5rem;
+}

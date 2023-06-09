@@ -1,15 +1,16 @@
-from typing import Any, Dict
+from typing import Any, Dict, Optional, Type
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models.query import QuerySet
 from django.db.models import Q
+from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, reverse
 from django.utils.translation import gettext_lazy as _
 from . models import Car, OrderEntry, Service, Order
 from django.views import generic
-from . forms import OrderReviewForm
+from . forms import OrderReviewForm, OrderForm
 
 def index(request):
     cars = Car.objects.all().count()
@@ -82,16 +83,7 @@ class OrderListView(generic.ListView):
         return qs
             
 
-class UserOrderEntryListView(LoginRequiredMixin, generic.ListView):
-    model = Order
-    template_name = 'service/user_orderentry_list.html'
-    paginate_by = 10
 
-    def get_queryset(self) -> QuerySet[Any]:
-        qs = super().get_queryset()
-        qs = qs.filter(car__client=self.request.user)
-        return qs
-    
 class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
     model = Order
     template_name = 'service/order_detail.html'
@@ -120,3 +112,52 @@ class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
     
     def get_success_url(self) -> str:
         return reverse('order_detail', kwargs={'pk':self.get_object().pk})
+    
+
+class UserOrdersListView(LoginRequiredMixin, generic.ListView):
+    model = Order
+    template_name = 'service/user_orders.html'
+    paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Any]:
+        qs = super().get_queryset()
+        qs = qs.filter(car__client=self.request.user).order_by('due_back')
+        return qs
+
+
+class UserCarListView(LoginRequiredMixin, generic.ListView):
+    model = Car
+    template_name = 'service/user_car_list.html'
+    paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Any]:
+        qs = super().get_queryset()
+        qs = qs.filter(client=self.request.user)
+        return qs
+
+
+class UserOrderDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Order
+    template_name = 'user_order.html'
+
+
+class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Order
+    form_class = OrderForm
+    template_name = 'service/user_order_form.html'
+
+    def get_form(self, form_class: Type[BaseModelForm] | None = form_class) -> BaseModelForm:
+        form = super().get_form(form_class)
+        if not form.is_bound:
+            form.fields["car"].queryset = Car.objects.filter(client=self.request.user)
+        return form
+
+    def get_success_url(self) -> str:
+        return reverse('my-order-new')
+
+    def form_valid(self, form):
+        form.instance.order = self.request.user
+        return super().form_valid(form)
+
+    def get_absolute_url(self):
+        return reverse('order_detail', args=[str(self.id)])
