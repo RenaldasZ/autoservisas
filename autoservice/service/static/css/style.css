@@ -63,18 +63,6 @@ main {
   padding: 2rem;
 }
 
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-
 a {
   color: #1b4c2e;
   text-decoration: none;
@@ -219,4 +207,37 @@ label[for='id_content'] {
 img.user-avatar {
   max-height: 1rem;
   border-radius: 0.5rem;
+}
+
+.user-friendly-div {
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  color: #333333;
+  text-align: center;
+}
+
+.user-friendly-div ul {
+  list-style: none;
+}
+
+.user-friendly-div:hover {
+  background-color: #eeeeee;
+}
+
+.user-friendly-div:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #99c4ff;
+}
+
+.user-friendly-div button {
+  width: 200px;
+
+}
+
+.user-friendly-div img {
+  width: 30%;
 }

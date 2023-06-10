@@ -1,10 +1,15 @@
+
+
+
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Create New Order</h1>
+<div class="user-friendly-div">
+  <h1>Create a New Order</h1>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Create Order</button>
   </form>
+</div>
 {% endblock %}

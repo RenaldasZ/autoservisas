@@ -7,18 +7,17 @@
 
 {% block content %}
 <body>
+  <div class="user-friendly-div">
   <h1>Welcome to Ren's Auto Garage!</h1>
-  <div class="container">
+  <h2>We have {{ cars }} registered cars</h2>
+  <h3>And {{ services }} available services</h3>
+      <ul>
+        {% for service_name in all_services %}
+        <li>{{ service_name }}</li>
+        {% endfor %}
+      </ul><br>
 
-    <ul>
-      <h2>We have {{ cars }} registered cars</h2>
-      <h3>And {{ services }} available services</h3>
-      {% for service_name in all_services %}
-      <li>{{ service_name }}</li>
-      {% endfor %}
-    </ul><br>
-
-    <h2>Service Progress</h2>
+  <h2>Service Progress</h2>
     <ul>
       <li>New services: {{ new_services }}</li>
       <li>Processing services: {{ processing_services }}</li>

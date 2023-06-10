@@ -1,6 +1,5 @@
 
 
-
 from typing import Any, Dict, Optional, Type
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
@@ -9,7 +8,7 @@ from django.db.models.query import QuerySet
 from django.db.models import Q
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, reverse
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.utils.translation import gettext_lazy as _
 from . models import Car, OrderEntry, Service, Order
 from django.views import generic
@@ -205,9 +204,17 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
 class OrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Order
     template_name = 'service/order_confirm_delete.html'
-    success_url = reverse_lazy('my_orders')
+    
+    def test_func(self):
+        order = self.get_object() 
+        proccesing_or_complete = order.order_entries.filter(Q(status='processing') | Q(status='complete')).exists()
+        return order.car.client == self.request.user and not proccesing_or_complete
 
-    def test_func(self) -> bool:
-        order = self.get_object()
-        new_or_cancelled = order.order_entries.filter(Q(status='processing') | Q(status='complete')).exists()
-        return not new_or_cancelled
+    def handle_no_permission(self):
+        messages.error(self.request, _('You cannot delete the Order while it is already in process or complete. If you still want to delete your order, please contact the garage staff! Or You are not authorized'))
+        return redirect('my_orders')
+    
+    def get_success_url(self):
+        messages.success(self.request, _('Order delete success!'))
+        return reverse_lazy('my_orders')
+    
