@@ -157,11 +157,12 @@ class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
         return form
 
     def get_success_url(self) -> str:
+        messages.success(self.request, _('Order created!'))
         return reverse('my_orders')
 
-    # def form_valid(self, form):
-    #     form.instance.client = self.request.user
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        form.instance.car.client = self.request.user
+        return super().form_valid(form)
 
     def get_absolute_url(self):
         return reverse('order_detail', args=[str(self.id)])
@@ -211,7 +212,8 @@ class OrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteVie
         return order.car.client == self.request.user and not proccesing_or_complete
 
     def handle_no_permission(self):
-        messages.error(self.request, _('You cannot delete the Order while it is already in process or complete. If you still want to delete your order, please contact the garage staff! Or You are not authorized'))
+        messages.error(self.request, _('''You are not authorized to delete this Order. 
+                                        Please contact the garage staff!'''))
         return redirect('my_orders')
     
     def get_success_url(self):
