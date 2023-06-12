@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-
+{% load static i18n %}
 {% block content %}
-  <h1>Are you sure you want to delete the order?</h1>
+  <h1>{% trans "Are you sure you want to delete the order?"|capfirst %}</h1>
   <form method="post">
     {% csrf_token %}
     <p>{{ object }}</p>
-    <button type="submit">Delete</button>
-    <a href="{% url 'my_orders' %}">Cancel</a>
+    <button type="submit">{% trans "Delete"|capfirst %}</button>
+    <a href="{% url 'my_orders' %}">{% trans "Cancel"|capfirst %}</a>
   </form>
 {% endblock %}

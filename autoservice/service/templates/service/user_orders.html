@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block title %}Welcome to {{ block.super }}{% endblock title %}
 
 {% block content %}
 <div class="container">
-    <li><a href="{% url 'my-order-new'%}?next=/service">Make an order</a></li>
-<h1>My orders</h1>
+    <li><a href="{% url 'my-order-new'%}?next=/service">{% trans "Make an order"|capfirst %}</a></li>
+<h1>{% trans "My orders"|capfirst %}</h1>
 {% if order_list %}
 <ul>
     {% for order in order_list %}
@@ -13,17 +13,17 @@
             <a href="{% url 'order_detail' order.pk %}">{{ order.car.model }}</a>
             
             {% if order.due_back %}, 
-            Should be fixed by: {{ order.due_back }}
+            {% trans "Should be fixed by:"|capfirst %} {{ order.due_back }}
             {% endif %}
             {% if order.status == status and order.is_overdue %}
-            <span class="orderoverdue">OVERDUE!</span>{% endif %}
-            <a href="{% url 'order_delete' order.pk %}"> Delete</a>
+            <span class="orderoverdue">{% trans "OVERDUE!"|capfirst %}</span>{% endif %}
+            <a href="{% url 'order_delete' order.pk %}"> {% trans "Delete"|capfirst %}</a>
         </li>
     {% endfor %}
 </ul>
 {% else %}
 <p class="box box-warning">
-    You have no orders yet, go and make some!
+    {% trans "You have no orders yet, go and make some!"|capfirst %}
 </p>
 </div>
 {% endif %}

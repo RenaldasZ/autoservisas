@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static i18n %}
+
 {% block content %}
 <div class="user-friendly-div">
-  <h1>{% trans "Create a New Order"|capfirst %}</h1>
-  <form method="post">
+  <h1>{% trans "Add a Service"|capfirst %}</h1>
+  <form method="post" action="{{ request.path }}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">{% trans "Create Order"|capfirst %}</button>
+    <button type="submit">{% trans "Confirm"|capfirst %}</button>
   </form>
 </div>
 {% endblock %}

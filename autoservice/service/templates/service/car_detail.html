@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}
   Welcome to {{ block.super }}
@@ -9,10 +9,10 @@
 <h1>Car Detail</h1>
   <div class="container">
     <ul class="carlist_content">
-      <li><strong>Owner:</strong> {{ car.client }}</li>
-      <li><strong>Model:</strong> {{ car.model }}</li>
-      <li><strong>License Plate:</strong> {{ car.licence_plate }}</li>
-      <li><strong>VIN Code:</strong> {{ car.vin_code }}</li>
+      <li><strong>{% trans "Owner:"|capfirst %}</strong> {{ car.client }}</li>
+      <li><strong>{% trans "Model:"|capfirst %}</strong> {{ car.model }}</li>
+      <li><strong>{% trans "License Plate:"|capfirst %}</strong> {{ car.licence_plate }}</li>
+      <li><strong>{% trans "VIN Code:"|capfirst %}</strong> {{ car.vin_code }}</li>
         {% if car.model.cover %}
           <img src="{{ car.model.cover.url }}">
         {% else %}

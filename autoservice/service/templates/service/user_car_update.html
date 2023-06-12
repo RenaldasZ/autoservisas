@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
-
+{% load static i18n %}
 {% block content %}
-  <h1>Edit you car</h1>
+  <h1>{% trans "edit you car"|capfirst %}</h1>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Confirm</button>
+    <button type="submit">{% trans "confirm"|capfirst %}</button>
   </form>
 {% endblock %}

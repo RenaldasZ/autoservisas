@@ -1,5 +1,6 @@
 
 
+
 from typing import Any, Dict, Optional, Type
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
@@ -12,7 +13,7 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.utils.translation import gettext_lazy as _
 from . models import Car, OrderEntry, Service, Order
 from django.views import generic
-from . forms import OrderReviewForm, OrderForm, CarForm
+from . forms import OrderReviewForm, OrderCreateForm, CarForm, OrderEntryCreateForm
 from django.urls import reverse_lazy
 
 
@@ -88,7 +89,11 @@ class OrderListView(generic.ListView):
             
 
 
-class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
+class OrderDetailView(
+    generic.edit.FormMixin, 
+    generic.DetailView
+    ):
+
     model = Order
     template_name = 'service/order_detail.html'
     form_class = OrderReviewForm
@@ -118,7 +123,11 @@ class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
         return reverse('order_detail', kwargs={'pk':self.get_object().pk})
     
 
-class UserOrdersListView(LoginRequiredMixin, generic.ListView):
+class UserOrdersListView(
+    LoginRequiredMixin, 
+    generic.ListView
+    ):
+
     model = Order
     template_name = 'service/user_orders.html'
     paginate_by = 10
@@ -129,7 +138,11 @@ class UserOrdersListView(LoginRequiredMixin, generic.ListView):
         return qs
 
 
-class UserCarListView(LoginRequiredMixin, generic.ListView):
+class UserCarListView(
+    LoginRequiredMixin, 
+    generic.ListView
+    ):
+
     model = Car
     template_name = 'service/user_car_list.html'
     paginate_by = 10
@@ -140,14 +153,22 @@ class UserCarListView(LoginRequiredMixin, generic.ListView):
         return qs
 
 
-class UserOrderDetailView(LoginRequiredMixin, generic.DetailView):
+class UserOrderDetailView(
+    LoginRequiredMixin, 
+    generic.DetailView
+    ):
+
     model = Order
     template_name = 'user_order.html'
 
 
-class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
+class UserOrderCreateView(
+    LoginRequiredMixin, 
+    generic.CreateView
+    ):
+
     model = Order
-    form_class = OrderForm
+    form_class = OrderCreateForm
     template_name = 'service/user_order_create.html'  
 
     def get_form(self, form_class: Type[BaseModelForm] | None = form_class) -> BaseModelForm:
@@ -168,7 +189,11 @@ class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
         return reverse('order_detail', args=[str(self.id)])
     
 
-class UserCarCreateView(LoginRequiredMixin, generic.CreateView):
+class UserCarCreateView(
+    LoginRequiredMixin, 
+    generic.CreateView
+    ):
+
     model = Car
     form_class = CarForm
     template_name = 'service/user_car_create.html'  
@@ -183,7 +208,11 @@ class UserCarCreateView(LoginRequiredMixin, generic.CreateView):
         return super().form_valid(form)
     
 
-class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
+class CarUpdateView(
+    LoginRequiredMixin, 
+    generic.UpdateView
+    ):
+
     model = Car
     form_class = CarForm
     template_name = 'service/user_car_update.html'
@@ -202,7 +231,12 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
         return reverse('car_detail', kwargs={'pk': self.object.pk})
     
 
-class OrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+class OrderDeleteView(
+    LoginRequiredMixin, 
+    UserPassesTestMixin, 
+    generic.DeleteView
+    ):
+
     model = Order
     template_name = 'service/order_confirm_delete.html'
     
@@ -220,3 +254,27 @@ class OrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteVie
         messages.success(self.request, _('Order delete success!'))
         return reverse_lazy('my_orders')
     
+
+class OrderEntryCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    model = OrderEntry
+    form_class = OrderEntryCreateForm
+    template_name = "service/create_service.html"
+
+    def test_func(self) -> bool | None:
+        order = get_object_or_404(Order, pk=self.kwargs['order_pk'])
+        return order.car.client == self.request.user
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        order = Order.objects.get(pk=self.kwargs['order_pk'])
+        form.instance.order = order
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self) -> str:
+        messages.success(self.request, _('Service created!'))
+        return reverse('order_detail', kwargs={'pk': self.kwargs['order_pk']})
+
+    def get_initial(self) -> Dict[str, Any]:
+        initial = super().get_initial()
+        initial["order"] = get_object_or_404(Order, pk=self.kwargs['order_pk'])
+        return initial

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}
   Welcome to {{ block.super }}
@@ -9,7 +9,7 @@
 <div class="user-friendly-div">
   {% if cars %}
   <ul>
-        <h1>Cars in service</h1>
+        <h1>{% trans "Cars in service"|capfirst %}</h1>
         {% include 'includes/search.html' %}
         {% include 'includes/paginator_car.html' %}
         {% for car in cars %}
@@ -31,6 +31,6 @@
       {% include 'includes/paginator_bottom.html' %}
   </div>
   {% else %}
-    <p>No cars found.</p>
+    <p>{% trans "No cars found."|capfirst %}</p>
 {% endif %}
 {% endblock %}

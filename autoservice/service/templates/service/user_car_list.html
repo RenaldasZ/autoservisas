@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block title %}Welcome to {{ block.super }}{% endblock title %}
 
 {% block content %}
 <div class="container">
-    <li><a href="{% url 'my-car-new'%}?next=/service">Register your car</a></li>
-<h1>My cars</h1>
+    <li><a href="{% url 'my-car-new'%}?next=/service">{% trans "Register your car"|capfirst %}</a></li>
+<h1>{% trans "my cars"|capfirst %}</h1>
 {% if car_list %}
         <ul>
             {% for car in car_list %}
                 <li>
                     <a href="{% url 'car_detail' car.pk %}">{{ car.model }}</a>
-                    <a href="{% url 'car_update' car.pk %}"> Edit</a>
+                    <a href="{% url 'car_update' car.pk %}"> {% trans "edit"|capfirst %}</a>
                 </li>
             {% endfor %}
         </ul>
 {% else %}
 <p class="box box-warning">
-    You have no cars yet, go and make some!
+    {% trans "You have no cars yet, go and make some!"|capfirst %}
 </p>
 </div>
 {% endif %}

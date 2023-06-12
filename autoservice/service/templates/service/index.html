@@ -1,29 +1,27 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% load humanize %}
-{% block title %}
-  Welcome to {{ block.super }}
-{% endblock title %}
+{% block title %} Welcome to {{ block.super }}{% endblock title %}
 
 {% block content %}
 <body>
   <div class="user-friendly-div">
-  <h1>Welcome to Ren's Auto Garage!</h1>
-  <h2>We have {{ cars }} registered cars</h2>
-  <h3>And {{ services }} available services</h3>
+  <h1>{% trans "Welcome to Ren's Auto Garage!"|capfirst %}</h1>
+  <h2>{{ cars }} {% trans "registered cars"|capfirst %}</h2>
+  <h3>{{ services }} {% trans "available services"|capfirst %}</h3>
       <ul>
         {% for service_name in all_services %}
         <li>{{ service_name }}</li>
         {% endfor %}
       </ul><br>
 
-  <h2>Service Progress</h2>
+  <h2>{% trans "Service Progress"|capfirst %}</h2>
     <ul>
-      <li>New services: {{ new_services }}</li>
-      <li>Processing services: {{ processing_services }}</li>
-      <li>Completed services: {{ completed_services }}</li>
-      <li>Canceled services: {{ canceled_services }}</li>
-      <li>You'r visiting us already for the: {{ num_visits|ordinal }} time</li>
+      <li>{% trans "New services:"|capfirst %} {{ new_services }}</li>
+      <li>{% trans "Processing services:"|capfirst %} {{ processing_services }}</li>
+      <li>{% trans "Completed services:"|capfirst %} {{ completed_services }}</li>
+      <li>{% trans "Canceled services:"|capfirst %} {{ canceled_services }}</li>
+      <li>{% trans "You'r visiting us already for the:"|capfirst %} {{ num_visits|ordinal }} time</li>
     </ul>
   </div>
 </body>

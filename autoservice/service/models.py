@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from datetime import date
-# from tinymce import models as tinymce_models
 from tinymce.models import HTMLField
 
 User = get_user_model()

@@ -16,7 +16,8 @@ class OrderReviewForm(forms.ModelForm):
         }
 
 
-class OrderForm(forms.ModelForm):
+class OrderCreateForm(forms.ModelForm):
+    # service = forms.ModelChoiceField(queryset=models.Service.objects.all(), empty_label=None)
     class Meta:
         model = models.Order
         fields = ('car', 'due_back', 'price')
@@ -31,4 +32,13 @@ class CarForm(forms.ModelForm):
         fields = ('model', 'vin_code', 'licence_plate', 'note')
         widgets = {
             'due_back': DateInput(),
+        }
+
+
+class OrderEntryCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.OrderEntry
+        fields = ("service", "order")
+        widgets = {
+        'order': forms.HiddenInput(),
         }

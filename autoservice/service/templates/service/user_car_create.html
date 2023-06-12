@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="user-friendly-div">
-  <h1>Create New Car</h1>
+  <h1>{% trans "Create New Car" %}</h1>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">submit</button>
+    <button type="submit">{% trans "submit" %}</button>
   </form>
 </div>
 {% endblock %}

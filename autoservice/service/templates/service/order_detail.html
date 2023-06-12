@@ -1,33 +1,34 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block title %}Welcome to {{ block.super }}{% endblock title %}
 
 {% block content %}
   <div class="container">
-    <h1>Service Order #{{ order.id }}</h1>
-      <h2><a href="{% url 'order_delete' order.pk %}"> Delete</a></h2>
-    <strong>Car owner: </strong>{{ order.car.client }}<br>
-    <strong>Model: </strong>{{ order.car.model.make }} {{ order.car.model.model }} {{ order.car.model.year }}<br>
-    <strong>Engine: </strong>{{ order.car.model.engine }}<br>
-    <strong>Date: </strong>{{ order.date }}<br>
-    <strong>Note: </strong>{{ order.car.note|safe }}<br><br>
+    <h1>{% trans "Service Order #" %}{{ order.id }}</h1>
+      <h2><a href="{% url 'order_delete' order.pk %}">{% trans "Delete" %}</a></h2>
+    <strong>{% trans "Car owner:" %} </strong>{{ order.car.client }}<br>
+    <strong>{% trans "Model:" %} </strong>{{ order.car.model.make }} {{ order.car.model.model }} {{ order.car.model.year }}<br>
+    <strong>{% trans "Engine:" %} </strong>{{ order.car.model.engine }}<br>
+    <strong>{% trans "Date:" %} </strong>{{ order.date }}<br>
+    <strong>{% trans "Note:" %} </strong>{{ order.car.note|safe }}<br>
+    <a href="{% url 'create_service' order.pk %}">{% trans "Add a Service" %}</a><br><br>
     
-    <center><strong>Order Entries</strong></center>
+    <center><strong>{% trans "Order Entries" %}</strong></center>
 
       {% for entry in order.order_entries.all %}
       {{ entry.service.name }}:<br> 
-        Quantity - {{ entry.quantity }}, 
-        Price - {{ entry.price }}$,<br>
-        Status - 
+      {% trans "Quantity -" %} {{ entry.quantity }}, 
+      {% trans "Price -" %} {{ entry.price }}$,<br>
+      {% trans "Status -" %}
           {% with entry_color=entry.get_color %}
-            <span style="color: {{ entry_color }}">{{ entry.get_status_display }}<br><br></span>
+            <span style="color: {{ entry_color }}">{{ entry.get_status_display }}<span><br><br>
           {% endwith %}
         
       {% empty %}
-        <li>No order entries found.</li>
+        <li>{% trans "No order entries found." %}</li>
       {% endfor %}
 
-    <strong>Total Price: ${{ order.price }}</strong>
+    <strong>{% trans "Total Price:" %} ${{ order.price }}</strong>
     <h5 class="carlist_content">
       <a href="{% url 'car_detail' order.car.pk %}"><br>
       {% if order.car.model.cover %}
@@ -37,23 +38,23 @@
       {% endif %}</a>
     </h5>
 
-    <h2>Reviews</h2>
+    <h2>{% trans "Reviews" %}</h2>
     {% if user.is_authenticated %}
     {% if user.is_superuser or user.is_staff or user == order.car.client %}
         <form method="post" action="{{ request.path }}">
-        <h3>Leave your review</h3>
+        <h3>{% trans "Leave your review" %}</h3>
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Post</button>
+        <button type="submit">{% trans "Post" %}</button>
         </form>
     {% else %}
-        <p class="box box-info">the car owner or employee can participate in the order discussion</p>
+        <p class="box box-info">{% trans "The car owner or employee can participate in the order discussion" %}</p>
     {% endif %}
     {% endif %}
     {% if order.reviews.count > 0 %}
         <ul>
             {% for review in order.reviews.all %}
-              <li>{{ review.reviewed_at }} by <a href="{% url 'profile' review.reviewer.id %}">
+              <li>{{ review.reviewed_at }}{% trans " by " %}<a href="{% url 'profile' review.reviewer.id %}">
                 {% if review.reviewer.profile.picture %}
                 <img src="{{ review.reviewer.profile.picture.url }}" class="user-avatar">
                 {% endif %}

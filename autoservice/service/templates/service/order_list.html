@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static i18n %}
 {% block title %}
 Welcome to {{ block.super }}
 {% endblock %}
@@ -7,30 +7,30 @@ Welcome to {{ block.super }}
 {% block content %}
 
 <div class="container">
-  <h1>Orders</h1>
+  <h1>{% trans "Orders" %}</h1>
   {% include 'includes/search.html' %}
   {% include 'includes/paginator_nav.html' %}
   <ul>
     {% if orders %}
       {% for order in orders %}
         <li class="container">
-          Order #{{ order.id }} <a href="{% url 'order_detail' order.pk %}"><br><br>
+          {% trans "Order #" %}{{ order.id }} <a href="{% url 'order_detail' order.pk %}"><br><br>
           <ul>
-            <li>Name: {{ order.car.client }}</li>
-            <li>Licence plate: {{ order.car }}</li>
-            <li>Order date: {{ order.date }}</li>
+            <li>{% trans "Name:" %} {{ order.car.client }}</li>
+            <li>{% trans "Licence plate:" %} {{ order.car }}</li>
+            <li>{% trans "Order date:" %} {{ order.date }}</li>
             {% if order.due_back %} 
-            Should be fixed by: {{ order.due_back }}
+            {% trans "Should be fixed by:" %} {{ order.due_back }}
             {% endif %}
             {% if order.status == status and order.is_overdue %}
-            <span class="orderoverdue">OVERDUE!</span>{% endif %}
+            <span class="orderoverdue">{% trans "OVERDUE!" %}</span>{% endif %}
           </ul>
           </a>
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <li>No orders found.</li>
+    <li>{% trans "No orders found." %}</li>
   {% endif %}
   {% include 'includes/paginator_pages.html' %}
 </div>
